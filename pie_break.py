@@ -9,13 +9,16 @@ url_bebop = 'https://bit.ly/2KqqZ8r'
 url_gt_allday = 'https://vimeo.com/17194640'
 default_urls = [url_wikipedia_rand, url_bebop, url_gt_allday]
 
+
 def random_url():
     '''Return a url at random from urls.txt in . or from the global defaults'''
     try:
-        with open('urls.txt', 'r') as l:
-            links = l.read()
+        with open('urls.txt', 'r') as links_file:
+            links = links_file.read()
+            links.strip()
+            print('Reading urls from file..')
     except FileNotFoundError as e:
-        print('Using hardcoded urls.')
+        print('Using hardcoded urls..')
         return random.choice(default_urls)
     else:
         if len(links) > 0:
@@ -25,7 +28,7 @@ def random_url():
             return random.choice(default_urls)
 
 
-def break_timer(work_time=75, url='https://bit.ly/2KqqZ8r'):
+def break_timer(work_time=75, url=url_bebop):
     '''Open "url" approximately every "work_time" minutes forever.'''
     print(f'\r\nWorking for {work_time} minutes')
     count = 0
