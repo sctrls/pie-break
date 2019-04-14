@@ -54,5 +54,4 @@ if __name__ == '__main__':
     else:
         print('How many minutes do you want to work for? ')
         work_time = int(stdin.readline())
-        print('Any url preferences? ')
-        url_today = stdin.readline()
+        break_timer(work_time)
