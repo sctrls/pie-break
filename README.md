@@ -42,8 +42,10 @@ Array of default urls:
 
 <br>
 
+
 ## TODO
+* Better comments
+* Tests
+* Synchronize
 * Read urls from a browser bookmark folder.
 * A convenient way to specify the folder.
-* Properly randomize url for the general public so they don't have to listen to bebop first
-* When a url is specified, do not randomize.
