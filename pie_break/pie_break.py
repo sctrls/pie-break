@@ -2,17 +2,17 @@
 
 import time
 import webbrowser
-from sys import argv, exit
 import random
+from sys import argv, exit
 
 
 class PieBreak:
-    """A timer class which accepts custom work times and listas of urls"""
+    """A timer class which accepts custom work times and lists of urls"""
 
     def __init__(
         self, work_time=70,
-        urls=['https://en.wikipedia.org/wiki/Special:Random']
-    ):
+        urls=["""https://th-thumbnailer.cdn-si-edu.com/Yn7s1JKbCWoQs95tdmpZGYKJ9ms=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/01/fb/01fb1828-7c3e-4a54-8228-a9dc21fbcaf8/waterglass_edit.jpg"""]
+        ):
         self.work_time = work_time
         if urls:
             self.urls = urls
@@ -22,10 +22,8 @@ class PieBreak:
 
     def get_random_url(self):
         """Return a random url at random from urls.txt or default"""
-
         if len(self.urls) > 1:
-            print(urls)
-            return random.choice(urls)
+            return random.choice(self.urls)
         else:
             try:
                 with open('urls.txt', 'r') as links_file:
@@ -43,17 +41,15 @@ class PieBreak:
 
     def run(self):
         """Repeatedly open a url after a user-specified number of minutes"""
-
         print(f'\r\nWorking for {self.work_time} minutes')
-        count = 0
+        count = 1
         while True:
             url = self.get_random_url()
             print(f'Distraction URL is: {url}\r\n')
             time.sleep(int(self.work_time) * 60)
             # TODO print time
             print(
-                f'Break {count}: {self.work_time} minutes have \
-                  passed. Time for a break.'
+                f'''Break {count}: {self.work_time} minutes have passed. Time for a break.'''
             )
             count += 1
             webbrowser.open(url)
@@ -61,8 +57,8 @@ class PieBreak:
 
 if __name__ == '__main__':
     """If multiple arguments are passed, parse the first as
-    "working minutes" and the rest as urls"""
-
+    "working minutes" and the rest as urls
+    """
     timer = None
 
     # If a time and several urls are passed
@@ -104,6 +100,6 @@ if __name__ == '__main__':
     # If no parameters are passed
     else:
         timer = PieBreak()
-
     print(timer.get_params())
+
     timer.run()
