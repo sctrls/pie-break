@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
+from threading import Thread
 import time
 import webbrowser
 import random
 from sys import argv, exit
 
 
-class PieBreak:
+class PieBreak(Thread):
     """A timer class which accepts custom work times and lists of urls"""
 
     def __init__(
         self, work_time=70,
         urls=["""https://th-thumbnailer.cdn-si-edu.com/Yn7s1JKbCWoQs95tdmpZGYKJ9ms=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/01/fb/01fb1828-7c3e-4a54-8228-a9dc21fbcaf8/waterglass_edit.jpg"""]
         ):
+        Thread.__init__(self, group=None, target=self, name='pie_thread')
         self.work_time = work_time
         if urls:
             self.urls = urls
@@ -39,15 +41,24 @@ class PieBreak:
                 if len(links) > 0:
                     return random.choice(links)
 
+    async def get_user_input(self):
+        while True:
+            new_in = input("Add info while loop runs: ")
+            print(new_in)
+
+    # async def loop(self):
+
+
     def run(self):
         """Repeatedly open a url after a user-specified number of minutes"""
-        print(f'\r\nWorking for {self.work_time} minutes')
+        print(f'\r\n{time.strftime("%H:%M:%S", time.localtime())}: Working for {self.work_time} minutes')
         count = 1
         while True:
             url = self.get_random_url()
             print(f'Distraction URL is: {url}\r\n')
             time.sleep(int(self.work_time) * 60)
-            # TODO print time
+            # TODO print "5 minutes left"
+            # TODO time with asyncio instead
             print(
                 f'''Break {count}: {self.work_time} minutes have passed. Time for a break.'''
             )

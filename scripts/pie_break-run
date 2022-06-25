@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import asyncio
 from pie_break import pie_break
 from sys import argv, exit
 
@@ -47,4 +48,7 @@ else:
     timer = pie_break.PieBreak()
 
 print(timer.get_params())
-timer.run()
+timer.start()
+while True:
+    new_in = input("Add info while loop runs: ")
+    print(new_in)
