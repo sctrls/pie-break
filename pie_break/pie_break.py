@@ -1,29 +1,37 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
-from threading import Thread
+import threading
 import time
 import webbrowser
 import random
 from sys import argv, exit
 
 
-class PieBreak(Thread):
-    """A timer class which accepts custom work times and lists of urls"""
+class PieBreak(threading.Thread):
+    """A timer class which accepts custom work times and lists of urls."""
 
     def __init__(
         self, work_time=70,
-        urls=["""https://th-thumbnailer.cdn-si-edu.com/Yn7s1JKbCWoQs95tdmpZGYKJ9ms=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/01/fb/01fb1828-7c3e-4a54-8228-a9dc21fbcaf8/waterglass_edit.jpg"""]
+        urls=["https://th-thumbnailer.cdn-si-edu.com/Yn7s1JKbCWoQs95tdmpZGYKJ9ms=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/01/fb/01fb1828-7c3e-4a54-8228-a9dc21fbcaf8/waterglass_edit.jpg"]
         ):
-        Thread.__init__(self, group=None, target=self, name='pie_thread')
+        threading.Thread.__init__(self, group=None, target=self, name='pie_thread')
+        self.start_time = time.time()
         self.work_time = work_time
         if urls:
             self.urls = urls
 
     def get_params(self):
-        return self.work_time, self.urls
+        """Get the relative starting time in seconds, the total work
+        time, and list of urls from which the timer will pick.
+        """
+        return self.start_time, self.work_time, self.urls
+
+    def add_url(self, url):
+        self.urls.append = url
+
 
     def get_random_url(self):
-        """Return a random url at random from urls.txt or default"""
+        """Return a random url at random from urls.txt or default."""
         if len(self.urls) > 1:
             return random.choice(self.urls)
         else:
@@ -41,16 +49,13 @@ class PieBreak(Thread):
                 if len(links) > 0:
                     return random.choice(links)
 
-    async def get_user_input(self):
-        while True:
-            new_in = input("Add info while loop runs: ")
-            print(new_in)
-
-    # async def loop(self):
-
+    # async def get_user_input(self):
+    #     while True:
+    #         new_in = input("Add info while loop runs: ")
+    #         print(new_in)
 
     def run(self):
-        """Repeatedly open a url after a user-specified number of minutes"""
+        """Repeatedly open a url after a user-specified number of minutes."""
         print(f'\r\n{time.strftime("%H:%M:%S", time.localtime())}: Working for {self.work_time} minutes')
         count = 1
         while True:
@@ -68,7 +73,7 @@ class PieBreak(Thread):
 
 if __name__ == '__main__':
     """If multiple arguments are passed, parse the first as
-    "working minutes" and the rest as urls
+    "working minutes" and the rest as urls.
     """
     timer = None
 
