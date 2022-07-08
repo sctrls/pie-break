@@ -1,10 +1,16 @@
 #!/usr/bin/env python
-
-import threading
 from pie_break import pie_break
 from sys import argv, exit
+from threading import current_thread
 
 timer = None
+
+help_message = """
+pie_break accepts:
+    help: print this message
+    urls: list the urls chosen between for distraction
+    params: list parameters for the current timer
+    """
 
 # If a time and several urls are passed
 if len(argv) >= 3:
@@ -46,9 +52,21 @@ elif len(argv) == 2:
 else:
     timer = pie_break.PieBreak()
 
+# print(f"Main thread is daemon: {current_thread().daemon}")
 timer.start()
-# print(timer.get_params())
+# print(f"Timer thread is daemon: {timer.daemon}")
+
 
 while True:
-    new_in = input("Add info while loop runs: ")
-    print(new_in)
+    cmd = input("\nPieBreak: ")
+    if cmd == "urls":
+        print(timer.get_params()[-1])
+    elif cmd == "help":
+        print(help_message)
+    elif cmd == "params":
+        start_t, work_t, urls = timer.get_params()
+        print(f"Started at: {start_t}\nMinutes: {work_t}\nDistracting with urls: {urls}")
+    elif cmd == "reset":
+        minutes = input("\nHow many minutes to the next break? ")
+        timer = pie_break.PieBreak(work_time=minutes)
+        timer.start()
