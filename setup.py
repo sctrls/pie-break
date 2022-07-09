@@ -13,5 +13,5 @@ setup(name='pie_break',
       test_suite='tests',
       # include_package_data: to install data from MANIFEST.in
       include_package_data=True,
-      scripts=['scripts/pie_break-run'],
+      scripts=['scripts/piebreak'],
       zip_safe=False)
