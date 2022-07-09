@@ -1,3 +1,4 @@
+from datetime import datetime
 import threading
 import time
 import webbrowser
@@ -63,14 +64,19 @@ class PieBreak(threading.Thread):
         """Repeatedly open a url after a user-specified number of minutes."""
         print(f'\r\n{time.strftime("%H:%M:%S", time.localtime())}: Working for {self.work_time} minutes')
         while True:
+            self.start_time = datetime.now()
             url = self.get_random_url()
-            time.sleep(int(self.work_time) * 60)
+            time.sleep(30)
+            delta_seonds = (datetime.now() - self.start_time).total_seconds()
+            print(f"Time passed, more or less: {delta_seonds}")
+            if delta_seonds >= self.work_time * 60:
+                print(
+                    f'''{self.work_time} minutes have passed. Time for a break.'''
+                )
             # TODO print "5 minutes left"
-            # TODO time with asyncio instead
-            print(
-                f'''{self.work_time} minutes have passed. Time for a break.'''
-            )
-            webbrowser.open(url)
+                webbrowser.open(url)
+            elif delta_seonds >= 300:
+                print("Five minutes left.")
 
     # async def get_user_input(self):
     #     while True:

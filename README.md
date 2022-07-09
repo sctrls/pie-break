@@ -1,12 +1,12 @@
 # Pie Break
-#### An attention-grabbing break scheduler to keep you fresh.
+#### An attention-grabbing break timer to keep you fresh.
 
-Pie Break is a script that optionally takes a number of minutes x and a url as arguments, and alerts you every time x minutes have passed by opening the url in your default browser.
+pie_break optionally takes a number of minutes x and any number of urls as arguments. It alerts you every time x minutes have passed by opening a random url in your default web browser.
 
 <br>
 
 ## Requires
- - Python 3.6+
+ - Python 3.8.12
  - Optionally, a urls.txt file - containing space separated urls - placed in the same directory as pie_break.py
 
 <br>
