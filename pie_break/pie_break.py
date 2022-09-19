@@ -99,4 +99,3 @@ class PieBreak(threading.Thread):
                     s.run()
             print(f"\r\n{time.strftime('%H:%M:%S', time.localtime())}: Starting timer..")
             s.run()
-

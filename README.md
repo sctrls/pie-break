@@ -1,51 +1,30 @@
 # Pie Break
 #### An attention-grabbing break timer to keep you fresh.
 
-pie_break optionally takes a number of minutes x and any number of urls as arguments. It alerts you every time x minutes have passed by opening a random url in your default web browser.
+pie_break optionally takes a number of minutes x and a url as arguments. It alerts you every time x minutes have passed by opening a random url in your default web browser. The default work time is 50 minutes.
 
 <br>
 
 ## Requires
- - Python 3.8.12
- - Optionally, a urls.txt file - containing space separated urls - placed in the same directory as pie_break.py
+ - Python 3.8.13 (probably fine on earlier versions)
+ - Optionally, a urls.txt file - containing space separated urls - placed in the same directory as pie_break.py. This feature has not yet been implemented in any useful way.
 
 <br>
 
-## Run
-Run with:
+## Install and run
 
-`python3 pie/breaker.py`
+`pip install pie_break`
 
-<br>
+To be prompted for schedule details, run:
 
-You can also specify a time in minutes and url:
+`piebreak`
 
-`python3 pie/breaker.py 90 https://bit.ly/1QVSIYb`
+Run with only a time to use the default url:
 
-<br>
+`piebreak 45`
 
-Or only a time and use the default array of distraction URLs:
+or use your own:
 
-`python3 pie/breaker.py 45`
-
-<br>
-
-If a urls.txt file is included in the same directory as pie_break.py, **it will automatically be read from** to get the next url at every cycle.
+`piebreak 90 https://bit.ly/1QVSIYb`
 
 <br>
-
-## Defaults
-Array of default urls:
-* Wikipedia Random article - https://en.wikipedia.org/wiki/Special:Random
-* Cowboy Bebop OST on youtube - https://bit.ly/2KqqZ8r
-* Girl Talk's "All Day" - https://vimeo.com/17194640
-
-<br>
-
-
-## TODO
-* Better comments
-* Tests
-* Synchronize
-* Read urls from a browser bookmark folder.
-* A convenient way to specify the folder.
