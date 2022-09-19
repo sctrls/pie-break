@@ -15,42 +15,60 @@ pie_break accepts:
 # If a time and several urls are passed
 if len(argv) >= 3:
     try:
-        timer = pie_break.PieBreak(work_minutes=int(argv[1]), urls=argv[2:])
+        timer = pie_break.PieBreak(periodic=[int(argv[1])], urls=argv[2:])
     except ValueError:
         work_minutes = input(
-            'Try again. For how many minutes do you want to work? ')
+            "Try again. For how many minutes do you want to work? ")
         try:
-            work_minutes = int(work_minutes)
+            periodic = [int(work_minutes)]
         except ValueError:
-            exit(
-                'You use numbers like elon musk names children.. Exiting.')
+            exit("Exiting.")
         else:
             urls = []
             while True:
                 if urls:
-                    new_url = input('Another?: ')
+                    new_url = input("Another?: ")
                 else:
                     new_url = input(
-                        'If you want, enter a url by which to be \
-                            interrupted: ')
+                        "If you want, enter a url by which to be \
+                            interrupted: ")
                 if not new_url:
                     break
                 urls.append(new_url)
 
-            timer = pie_break.PieBreak(work_minutes=work_minutes, urls=urls)
-    timer.get_params()
+            timer = pie_break.PieBreak(periodic=periodic, urls=urls)
+    # timer.get_params()
 
 # If only a working time is passed
 elif len(argv) == 2:
     try:
-        timer = pie_break.PieBreak(work_minutes=int(argv[1]))
+        timer = pie_break.PieBreak(periodic=[int(argv[1])])
     except ValueError:
         work_minutes = input(
-            'Try again. For how many minutes do you want to work?')
+            "Try again. For how many minutes do you want to work?")
 
 # If no parameters are passed
 else:
-    timer = pie_break.PieBreak()
+    periodic = set()
+    one_offs = set()
+    repeating_timers = input("Would you like to schedule any repeating interruptions(y/n)? ")
+
+    while repeating_timers == 'y':
+        try:
+            periodic.add(int(input("How many minutes from now? ")))
+            repeating_timers = input("Any more(y/n)? ")
+        except:
+            one_offs.add(int(input("Enter a number of minutes: ")))
+
+    one_off_timers = input("Would you like to schedule any one off interruptions(y/n)? ")
+    while one_off_timers == 'y':
+        try:
+            one_offs.add(int(input("How many minutes from now? ")))
+            one_off_timers = input("Any more(y/n)? ")
+        except:
+            one_offs.add(int(input("Enter a number of minutes: ")))
+
+    timer = pie_break.PieBreak(periodic, one_offs)
 
 # print(f"Main thread is daemon: {current_thread().daemon}")
 timer.start()
@@ -60,30 +78,14 @@ timer.start()
 while True:
     cmd = input("\nPieBreak: ")
     if cmd == "urls":
-        print(timer.get_params()[-1])
+        print(timer.get_params()[1])
     elif cmd == "help":
         print(help_message)
     elif cmd == "params":
-        start_t, work_t, urls = timer.get_params()
-        print(f"Started at: {start_t}\nMinutes: {work_t}\nDistracting with urls: {urls}")
-    elif cmd == "reset":
-        minutes = input("\nHow many minutes to the next break? ")
-        timer = pie_break.PieBreak(work_minutes=minutes)
-        timer.start()
-    elif cmd == "as":
-        new_event = (30, 3, timer.start_break)
-        # Get and update a copy of the master event queue
-        start_time, work_minutes, urls, event_queue = timer.get_params()
-        event_queue.append(new_event)
-        # Get the remainder of the current queue in order to complete it
-        queue = [(event[0], event[1], timer.start_break) for event in timer.s.queue]
-        queue.append((time.time()+new_event[0], new_event[1], pie_break.PieBreak.start_break))
-        print(f"QUEUE: {queue}")
-        timer = pie_break.PieBreak(start_time, work_minutes, urls, queue)
-        print(f"HERE: {timer.get_params()}")
-        timer.start()
-    elif cmd == "check queue":
-        print(timer.s.queue)
-    elif cmd == "cancel":
-        for event in timer.s.queue:
-            timer.s.cancel(event)
+        start_t, work_t, urls, timing = timer.get_params()
+        print(f"Started at: {start_t}\nWorking for: {work_t}\nDistracting with urls: {urls}")
+    # elif cmd == "reset":
+        # minutes = input("\nHow many minutes to the next break? ")
+        # timer = pie_break.PieBreak(periodic=[minutes])
+        # # TODO: Check thread behaviour
+        # timer.start()
