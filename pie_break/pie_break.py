@@ -13,7 +13,7 @@ class PieBreak(threading.Thread):
         self,
         periodic={50},
         one_off=set(),
-        urls=["https://open.spotify.com/album/6H5fUQk4FkT9iR4SNHnK3D?si=N52exCBWSZW2ee4Pj8oTwg"]
+        urls=["https://www.youtube.com/watch?v=vB_gxLykQ_w&list=PL50z4CMjEkU-OsZvfWZfzaQl9LUTDHljh&index=8&ab_channel=TheManMakesTheHat"]
         ):
         threading.Thread.__init__(self, group=None, target=self, name="pie_thread")
         self.start_time = time.time()
@@ -70,7 +70,7 @@ class PieBreak(threading.Thread):
             print(f"\nTime for a break.\nPieBreak: ", end="")
             url = self.get_random_url()
             print(url)
-        # webbrowser.open(url)
+        webbrowser.open(url)
 
     def set_timing(self, timing_toggle):
         self.timing = timing_toggle
@@ -78,25 +78,25 @@ class PieBreak(threading.Thread):
 
     def run(self):
         """Repeatedly open a url after a user-specified number of minutes."""
-
         s = sched.scheduler(time.time, time.sleep)
-
-        # If there's anything in one_off, join it to periodic
-        # Create and run a schedule with both
-        # Loop over periodic thereafter
         self.timing = True
+
         if self.one_off:
             events = self.one_off | self.periodic
+            events = [x * 60 for x in events]
+            print(events)
             for event_time in events:
                 s.enter(event_time, 1, self.start_break)
             print(f"\r\n{time.strftime('%H:%M:%S', time.localtime())}: Starting timer..")
             s.run()
         if self.periodic:
-            while self.periodic:
+            periodic = [x * 60 for x in self.periodic]
+            print(periodic)
+            while periodic:
                 if self.timing:
-                    for event_time in self.periodic:
+                    for event_time in periodic:
                         s.enter(event_time, 1, self.start_break)
-                        s.run()
+                    s.run()
             print(f"\r\n{time.strftime('%H:%M:%S', time.localtime())}: Starting timer..")
             s.run()
 
