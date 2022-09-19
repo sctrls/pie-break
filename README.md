@@ -28,3 +28,12 @@ or use your own:
 `piebreak 90 https://bit.ly/1QVSIYb`
 
 <br>
+
+
+Improvements:
+- Improve the readability of this readme and on pypi
+- Add a reset command
+- Fix: keyboardinterrupt is ignored
+- Fix: cli runs without any schedulers after the timing is interrupted
+- Refactor playlist integration
+- Refactor for truly complex scheduling (APS[https://apscheduler.readthedocs.io/en/3.x/index.html])
